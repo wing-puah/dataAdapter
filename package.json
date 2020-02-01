@@ -1,0 +1,26 @@
+{
+	"name": "dataadapter",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest",
+		"test:watch": "jest --watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/wing-puah/dataAdapter.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/wing-puah/dataAdapter/issues"
+	},
+	"homepage": "https://github.com/wing-puah/dataAdapter#readme",
+	"devDependencies": {
+		"@babel/core": "^7.8.4",
+		"@babel/preset-env": "^7.8.4",
+		"babel-jest": "^25.1.0",
+		"jest": "^25.1.0"
+	}
+}
