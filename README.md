@@ -15,7 +15,7 @@ const data = {
 
 const schema = [
     { dataKey: 'one.one', key: 'first' },
-    { dataKey: 'one.two', key: 'second' }
+    { dataKey: 'one.two', key: 'second' },
     { 
       dataKey: 'one.renderAdd', 
       key: 'addition', 
@@ -34,7 +34,7 @@ const entity = {
 Pass the data and schema to the adapter. The transformed adapter will be mapped to the entity.
 
 ```
-const transformedData = buildEntity({ data, schema , entity })
+const transformedData = buildEntity({ data, schema, entity })
 ```
 
 **Output**
@@ -62,7 +62,7 @@ Alternatively, you might want a flexible schema output that could be utilised fo
 ```
 const schema = [
     { dataKey: 'one.one', key: 'first' , uiRenderer: data => <em>data</em> },
-    { dataKey: 'one.two', key: 'second' }
+    { dataKey: 'one.two', key: 'second' },
     { 
       dataKey: 'one.renderAdd', 
       key: 'addition', 
