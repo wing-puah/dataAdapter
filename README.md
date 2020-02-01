@@ -51,7 +51,8 @@ const transformedData = buildEntity({ data, schema , entity })
 }
 ```
 
-If the input data is an array of data, use `mapDataToAdapter({ data, schema})`, which will map and call the build entity internally. In this case, it will allow entity to be mapped with the object as there are too many different use cases.
+
+If the input data is an array of data, use `mapDataToAdapter({ data, schema})`, which will map and call the `buildEntity` internally. In this case, it will allow entity to be mapped with the object as there are too many different use cases.
 
 ## Dependencies 
 [Immutable JS](https://github.com/immutable-js/immutable-js)

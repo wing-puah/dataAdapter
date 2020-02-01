@@ -7,13 +7,15 @@ function getDataFromDotNotation(data, key) {
 		return null;
 	}
 
-	return key
-		? key.split('.').reduce((o, i) => {
-				return isObject(o) && Object.prototype.hasOwnProperty.call(o, i)
-					? o[i]
-					: null;
-		  }, dataObj)
-		: '';
+	return key ? _getDataOrReturnNull() : '';
+
+	function _getDataOrReturnNull() {
+		return key.split('.').reduce((o, i) => {
+			return isObject(o) && Object.prototype.hasOwnProperty.call(o, i)
+				? o[i]
+				: null;
+		}, dataObj);
+	}
 }
 
 function assignDataToDotNotation(data, key, valueToAssign) {
