@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import { parseToObj, isObject, parseToImmutable, parseToArr } from './helpers';
 
-function getDataFromDotNotation(data, key) {
+function getDataFromDotNotation(key, data) {
 	const dataObj = parseToObj(data);
 	if (!dataObj) {
 		return null;
@@ -16,6 +16,21 @@ function getDataFromDotNotation(data, key) {
 				: null;
 		}, dataObj);
 	}
+}
+
+function hasDataFromDotNotation(key, data) {
+	let hasData = true;
+
+	try {
+		const _data = key.split('.').reduce((o, i) => o[i], data);
+		if (!_data) {
+			hasData = false;
+		}
+	} catch (e) {
+		hasData = false;
+	}
+
+	return hasData;
 }
 
 function assignDataToDotNotation(data, key, valueToAssign) {
@@ -43,24 +58,48 @@ function buildEntityFromSchema({ data, schema, entity }) {
 
 	const immutableEntity = schema.reduce((acc, curSchema) => {
 		const { dataKey, key, renderer } = curSchema;
-		const dataFromKey =
-			dataKey === 'rowData' || !dataKey
-				? dataObj
-				: getDataFromDotNotation(dataObj, dataKey);
+		const dataFromKey = getDataFromKey(dataKey, dataObj);
 		const valueToAssign = renderer ? renderer(dataFromKey) : dataFromKey;
 
 		const _key = key || dataKey;
 		const _acc = assignDataToDotNotation(acc, _key, valueToAssign);
+
 		return _acc;
 	}, immutableObj);
 
 	return immutableEntity.toJS();
 }
 
+function getDataFromKey(dataKey, dataObject) {
+	return dataKey === 'rowData' || !dataKey
+		? dataObject
+		: getDataFromDotNotation(dataKey, dataObject);
+}
+
 function mapDataToAdapter({ data, schema }) {
 	return data.map(singleData =>
 		buildEntityFromSchema({ data: singleData, schema }),
 	);
+}
+
+function buildSchema({
+	data,
+	schema,
+	defaultSchema = { uiRenderer: _data => _data || '-' },
+}) {
+	return schema.reduce((acc, curSchema) => {
+		const { dataKey, key, renderer } = curSchema;
+
+		if (hasDataFromDotNotation(dataKey, data)) {
+			const _dataFromKey = getDataFromKey(dataKey, data);
+			const _renderedData = renderer ? renderer(_dataFromKey) : _dataFromKey;
+			const _key = key || dataKey;
+
+			acc[_key] = { ...defaultSchema, ...curSchema, data: _renderedData };
+		}
+
+		return acc;
+	}, {});
 }
 
 function reverseSchema(schema) {
@@ -76,4 +115,4 @@ function reverseSchema(schema) {
 	}, schemaArray);
 }
 
-export { buildEntityFromSchema, reverseSchema, mapDataToAdapter };
+export { buildEntityFromSchema, buildSchema, reverseSchema, mapDataToAdapter };

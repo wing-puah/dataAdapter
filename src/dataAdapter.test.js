@@ -1,4 +1,8 @@
-import { buildEntityFromSchema, mapDataToAdapter } from './dataAdapter';
+import {
+	buildEntityFromSchema,
+	mapDataToAdapter,
+	buildSchema,
+} from './dataAdapter';
 
 const data = {
 	one: {
@@ -74,5 +78,26 @@ describe('mapDataToAdapter', () => {
 		const test = mapDataToAdapter({ data: _repeatedData, schema });
 		const _repeatedResult = repeatData(expected, 3);
 		expect(test).toEqual(_repeatedResult);
+	});
+});
+
+const schemaObject = {
+	first: {
+		dataKey: 'one.one',
+		key: 'first',
+		data: 'this is one',
+	},
+	second: {
+		dataKey: 'one.two',
+		key: 'second',
+		data: 'this is two',
+	},
+};
+
+describe('buildSchema', () => {
+	test('should create schema object', () => {
+		const test = buildSchema({ data, schema });
+		expect(test).toMatchObject(schemaObject);
+		expect(test.first).toHaveProperty('uiRenderer');
 	});
 });
